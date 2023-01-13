@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!--edge浏览器H5兼容设置-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--360浏览器H5兼容设置-->
+    <meta name="renderer" content="webkit" />
+    <title>covid-web</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--导入核心文件-->
+    <script src="../bootstrap3/js/holder.js"></script>
+    <link href="../bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <script src="../bootstrap3/jquery-1.8.3.min.js"></script>
+    <script src="../bootstrap3/js/bootstrap.js"></script>
+    <script src="../bootstrap3/js/echarts.min.js"></script>
+    <script src="../bootstrap3/js/china.js"></script>
+    <!-- 字体图标 -->
+    <link rel="stylesheet" href="../bootstrap3/font-awesome-4.7.0/css/font-awesome.css" />
+    <link rel="stylesheet" type="text/css" href="../css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="../css/webindex.css" />
+    <link rel="stylesheet" type="text/css" href="../css/footer.css" />
+    <link rel="stylesheet" type="text/css" href="../css/top.css" />
+    <script src="../js/menu.js" type="text/javascript" charset="utf-8"></script>
+
+    <style type="text/css">
+        .divstyle{
+            width: 1700px;
+            height: 700px;
+        }
+    </style>
+</head>
+
+<body>
+<!-- 头部 -->
+<header class="header">
+    <!--学子商城logo-->
+    <div class="row">
+        <div class="col-md-3">
+        </div>
+        <!--快捷选项-->
+        <div class="col-md-9 top-item">
+            <ul class="list-inline pull-right">
+                <li></li>
+                <li class="li-split"></li>
+                <li></li>
+                <li class="li-split"></li>
+                <li></li>
+                <li class="li-split"></li>
+                <li>
+                    <!--下列列表按钮 ：管理-->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-link dropdown-toggle"
+                                data-toggle="dropdown">
+								<span id="top-dropdown-btn"><span class="fa fa-gears"></span>&nbsp;管理
+									<span class="caret"></span></span>
+                        </button>
+                        <ul class="dropdown-menu top-dropdown-ul" role="menu">
+                            <li><a href="password.html">修改密码</a></li>
+                            <li><a href="userdata.html">个人资料</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="li-split"></li>
+                <li>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+<div class="row top-nav">
+    <div class="col-md-6">
+        <ul class="nav nav-pills">
+            <li><a href="#"></a></li>
+            <li class="active"><a href="index.html"><span
+                    class="fa fa-home"></span></a></li>
+            <li><a href="supplies.html">物资列表</a></li>
+            <li><a href="insertsupplies.html">捐赠物资</a></li>
+        </ul>
+    </div>
+    <div class="col-md-6">
+        <form action="search.html" class="form-inline pull-right" role="form">
+            <div class="form-group">
+            </div>
+        </form>
+    </div>
+</div>
+</header>
+<!--主体-->
+<div class="container mycontent text-left">
+    <!--透明层 -->
+    <div class="panel-body">
+        <!--地址显示-->
+        <table class="table table-striped">
+            <p>物资列表</p>
+            <thead>
+            <tr>
+                <th>捐赠人姓名</th>
+                <th>物资名称</th>
+                <th>物资单价（元）</th>
+                <th>物资数量</th>
+                <th>物资金额（元）</th>
+                <th>联系电话</th>
+            </tr>
+            </thead>
+            <tbody id="address-list">
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--页脚开始-->
+<footer class="footer">
+    <!-- 品质保障，私人定制等-->
+    <div class="text-center rights container">
+        <div class="col-md-offset-2 col-md-2">
+            <span class="fa fa-thumbs-o-up"></span>
+            <p></p>
+        </div>
+        <div class="col-md-2">
+            <span class="fa fa-address-card-o"></span>
+            <p></p>
+        </div>
+        <div class="col-md-2">
+            <span class="fa fa-graduation-cap"></span>
+            <p></p>
+        </div>
+        <div class="col-md-2">
+            <span class="fa fa-bitcoin"></span>
+            <p></p>
+        </div>
+    </div>
+    <!--联系我们、下载客户端等-->
+    <div class="container beforeBottom">
+        <div class="col-md-offset-1 col-md-3">
+            <div>
+                <img src="" alt="" class="footLogo" />
+            </div>
+            <div>
+                <img src="" alt="" />
+            </div>
+        </div>
+        <div class="col-md-4 callus text-center">
+            <div class="col-md-4">
+                <ul>
+                    <li><a href="#"><p>covid帮助</p></a></li>
+                    <li><a href="#">新手指南</a></li>
+                    <li><a href="#">服务保障</a></li>
+                    <li><a href="#">常见问题</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <ul>
+                    <li><a href="#"><p>帮助</p></a></li>
+                    <li><a href="#">入驻</a></li>
+                    <li><a href="#">后台</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <ul>
+                    <li><a href="#"><p>关于我们</p></a></li>
+                    <li><a href="#">关于tyut</a></li>
+                    <li><a href="#">联系我们</a></li>
+                    <li><span class="fa fa-wechat"></span> <span
+                            class="fa fa-weibo"></span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="col-md-5">
+            </div>
+            <div class="col-md-6">
+            </div>
+        </div>
+    </div>
+    <!-- 页面底部-备案号 #footer -->
+    <div class="col-md-12 text-center bottom">
+        Copyright © 2022 tyut.cn All Rights Reserved 京ICP备000000000号-00 <a
+            target="_blank" href="http://www2017.tyut.edu.cn/">太原理工大学软件工程</a>
+    </div>
+</footer>
+<!--页脚结束-->
+</body>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        showAddressList();
+    });
+
+    function showAddressList() {
+        $
+            .ajax({
+                "url" : "/data/suppliesList",
+                "type" : "get",
+                "dataType" : "json",
+                "success" : function(json) {
+                    var list = json.data;
+                    console.log("count = " + list.length);
+
+                    $("#address-list").empty();
+
+                    for (var i = 0; i < list.length; i++) {
+                        console.log(list[i].name);
+
+                        var html = '<tr>'
+                            + '<td>#{username}</td>'
+                            + '<td>#{name}</td>'
+                            + '<td>#{price}</td>'
+                            + '<td>#{count}</td>'
+                            + '<td>#{money}</td>'
+                            + '<td>#{phone}</td>'
+                            + '</tr>';
+
+                        html = html.replace(/#{username}/g, list[i].username);
+                        html = html.replace(/#{name}/g, list[i].name);
+                        html = html.replace(/#{price}/g, list[i].price);
+                        html = html.replace(/#{count}/g, list[i].count);
+                        html = html.replace(/#{money}/g, list[i].money);
+                        html = html.replace(/#{phone}/g, list[i].phone);
+
+                        $("#address-list").append(html);
+
+                    }
+
+                    $(".add-def:eq(0)").hide();
+                }
+            });
+    }
+</script>
+
+</html>

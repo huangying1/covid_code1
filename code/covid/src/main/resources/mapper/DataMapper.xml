@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tyut.covid.dao.GetDataDao">
+
+    <insert id="insertData" parameterType="com.tyut.covid.bean.CovidBean">
+		insert into covid (
+		province_name,
+		province_short_name,
+		city_name,
+		current_confirmed_count,
+		confirmed_count,
+		suspected_count,
+		cured_count,
+		dead_count,
+		location_id,
+		pid,
+		datetime
+		) values (
+		#{provinceName},
+		#{provinceShortName},
+		#{cityName},
+		#{currentConfirmedCount},
+		#{confirmedCount},
+		#{suspectedCount},
+		#{curedCount},
+		#{deadCount},
+		#{locationId},
+		#{pid},
+		#{datetime}
+		)
+	</insert>
+    <insert id="insertWorldData" parameterType="com.tyut.covid.bean.WorldCovidBean">
+		insert into world_covid (
+		id,
+		continents,
+		province_id,
+		province_name,
+		current_confirmed_count,
+		confirmed_count,
+		suspected_count,
+		cured_count,
+		dead_count,
+		yesterday_confirmed_count,
+		datetime
+		) values (
+		#{id},
+		#{continents},
+		#{provinceId},
+		#{provinceName},
+		#{currentConfirmedCount},
+		#{confirmedCount},
+		#{suspectedCount},
+		#{curedCount},
+		#{deadCount},
+		#{yesterdayConfirmedCount},
+		#{datetime}
+		)
+	</insert>
+    <insert id="insertShangHai" parameterType="com.tyut.covid.bean.CityCovidBean">
+		insert into shanghai (
+		confirmed_count,
+		confirmed_incr,
+		cured_count,
+		cured_incr,
+		dead_count,
+		dead_incr,
+		date_id
+		) values (
+		#{confirmedCount},
+		#{confirmedIncr},
+		#{curedCount},
+		#{curedIncr},
+		#{deadCount},
+		#{deadIncr},
+		#{dateId}
+		)
+	</insert>
+	<insert id="insertHuBei" parameterType="com.tyut.covid.bean.CityCovidBean">
+		insert into hubei (
+		confirmed_count,
+		confirmed_incr,
+		cured_count,
+		cured_incr,
+		dead_count,
+		dead_incr,
+		date_id
+		) values (
+		#{confirmedCount},
+		#{confirmedIncr},
+		#{curedCount},
+		#{curedIncr},
+		#{deadCount},
+		#{deadIncr},
+		#{dateId}
+		)
+	</insert>
+	<insert id="insertBeiJing">
+		insert into beijing (
+		confirmed_count,
+		confirmed_incr,
+		cured_count,
+		cured_incr,
+		dead_count,
+		dead_incr,
+		date_id
+		) values (
+		#{confirmedCount},
+		#{confirmedIncr},
+		#{curedCount},
+		#{curedIncr},
+		#{deadCount},
+		#{deadIncr},
+		#{dateId}
+		)
+	</insert>
+    <insert id="insertSupplies" parameterType="com.tyut.covid.bean.Supplies">
+		insert into supplies (
+		username,
+		`name`,
+		price,
+		`count`,
+		addtime,
+		money,
+		province_code,
+		province_name,
+		city_code,
+        city_name,
+        area_code,
+        area_name,
+    	zip,
+    	address,
+    	phone,
+    	tel,
+    	tag
+		) values (
+		#{username},
+		#{name},
+		#{price},
+		#{count},
+		#{addtime},
+		#{money},
+		#{provinceCode},
+		#{provinceName},
+		#{cityCode},
+        #{cityName},
+        #{areaCode},
+        #{areaName},
+    	#{zip},
+    	#{address},
+    	#{phone},
+    	#{tel},
+    	#{tag}
+		)
+	</insert>
+	<update id="updateSupplies" parameterType="com.tyut.covid.bean.Supplies">
+		update
+		supplies
+		set
+		price = #{price},
+		`count` = #{count},
+		addtime = #{addtime},
+		money = #{money},
+		province_name = #{provinceName},
+    	city_name = #{cityName},
+    	area_name = #{areaName},
+    	province_code = #{provinceCode},
+    	city_code = #{cityCode},
+    	area_code = #{areaCode},
+    	zip = #{zip},
+    	address = #{address},
+    	phone = #{phone},
+    	tel = #{tel},
+    	tag = #{tag}
+		where
+		`name` = #{name}
+	</update>
+
+	<select id="getNumOfProvince" resultType="com.tyut.covid.bean.ResultVO">
+		select
+		province_name AS `key`,
+		sum(confirmed_count) AS `value`
+		from
+		covid
+		group by
+		province_name
+	</select>
+
+
+	<select id="getTopTenProvince" resultType="com.tyut.covid.bean.ResultVO">
+		select
+		province_name AS `key`,
+		sum(confirmed_count) AS `value`
+		from
+		covid
+		group by
+		province_name
+		order by
+		`value`
+		desc
+		LIMIT 0, 10;
+	</select>
+
+
+    <select id="getNumOfCity" resultType="com.tyut.covid.bean.ResultVO">
+		select
+		city_name AS `key`,
+		confirmed_count AS `value`
+		from
+		covid
+		group by
+		city_name
+	</select>
+
+	<select id="getTopTwentyCity" resultType="com.tyut.covid.bean.ResultVO">
+		select
+		city_name AS `key`,
+		confirmed_count AS `value`
+		from
+		covid
+		group by
+		city_name
+		order by
+		`value`
+		desc
+		LIMIT 0, 20;
+	</select>
+
+	<select id="getDeadTopFiveProvince" resultType="com.tyut.covid.bean.ResultVO">
+		select
+		province_name AS `key`,
+		sum(dead_count) AS `value`
+		from
+		covid
+		group by
+		province_name
+		order by
+		`value`
+		desc
+		LIMIT 0, 5;
+	</select>
+
+	<select id="getNumOfCountry" resultType="com.tyut.covid.bean.ResultVO">
+		select
+		province_name AS `key`,
+		confirmed_count AS `value`
+		from
+		world_covid
+	</select>
+	<select id="getTopTwentyCountry" resultType="com.tyut.covid.bean.ResultVO">
+		select
+		province_name AS `key`,
+		confirmed_count AS `value`
+		from
+		world_covid
+		order by
+		`value`
+		desc
+		limit 0, 20
+	</select>
+	<select id="getDeadTopTwentyCountry" resultType="com.tyut.covid.bean.ResultVO">
+		select
+		province_name AS `key`,
+		dead_count AS `value`
+		from
+		world_covid
+		order by
+		`value`
+		desc
+		limit 0, 20
+	</select>
+    <select id="getNumOfContinents" resultType="com.tyut.covid.bean.ResultVO">
+		SELECT
+		continents AS `key`,
+		SUM(confirmed_count) AS `value`
+		FROM
+		`world_covid`
+		GROUP BY
+		continents
+		order by
+		`value`
+		desc
+	</select>
+    <select id="getDataOfShangHai" resultType="com.tyut.covid.bean.ResultVOPlus">
+		select
+		confirmed_count AS `value1`,
+		cured_count AS `value2`,
+		dead_count AS `value3`,
+		date_id AS `key`
+		from
+		shanghai
+	</select>
+	<select id="getDataOfHuBei" resultType="com.tyut.covid.bean.ResultVOPlus">
+		select
+		confirmed_count AS `value1`,
+		cured_count AS `value2`,
+		dead_count AS `value3`,
+		date_id AS `key`
+		from
+		hubei
+	</select>
+	<select id="getDataOfBeiJing" resultType="com.tyut.covid.bean.ResultVOPlus">
+		select
+		confirmed_count AS `value1`,
+		cured_count AS `value2`,
+		dead_count AS `value3`,
+		date_id AS `key`
+		from
+		beijing
+	</select>
+	<select id="getSuppliesList" resultType="com.tyut.covid.bean.Supplies">
+		select * from supplies
+	</select>
+
+
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：xml文件对应哪个接口 -->
+<mapper namespace="com.tyut.covid.dao.DistrictDao">
+    
+    <!-- 通过父级代号，获取全国所有省 / 某省所有市 / 某市所有区 的列表 -->
+    <!-- List<District> findByParent(String parent) -->
+    <select id="findByParent" resultType="com.tyut.covid.bean.District">
+        SELECT
+            id, code, name, parent
+        FROM
+            china
+        WHERE
+            parent=#{parent}
+    </select>
+    
+    <!-- 根据 code 查询地区信息 -->
+    <!-- District findByCode(String code) -->
+    <select id="findByCode" resultType="com.tyut.covid.bean.District">
+        SELECT
+            name
+        FROM
+            china
+        WHERE
+            code=#{code}
+    </select>
+    
+</mapper>

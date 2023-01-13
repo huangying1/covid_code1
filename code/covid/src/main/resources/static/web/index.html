@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<!--edge浏览器H5兼容设置-->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<!--360浏览器H5兼容设置-->
+	<meta name="renderer" content="webkit" />
+	<title>covid-web</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--导入核心文件-->
+	<script src="../bootstrap3/js/holder.js"></script>
+	<link href="../bootstrap3/css/bootstrap.css" rel="stylesheet" type="text/css">
+	<script src="../bootstrap3/jquery-1.8.3.min.js"></script>
+	<script src="../bootstrap3/js/bootstrap.js"></script>
+	<script src="../bootstrap3/js/echarts.min.js"></script>
+	<script src="../bootstrap3/js/china.js"></script>
+<!-- 字体图标 -->
+	<link rel="stylesheet" href="../bootstrap3/font-awesome-4.7.0/css/font-awesome.css" />
+	<link rel="stylesheet" type="text/css" href="../css/layout.css" />
+	<link rel="stylesheet" type="text/css" href="../css/webindex.css" />
+	<link rel="stylesheet" type="text/css" href="../css/footer.css" />
+	<link rel="stylesheet" type="text/css" href="../css/top.css" />
+	<script src="../js/menu.js" type="text/javascript" charset="utf-8"></script>
+
+	<style type="text/css">
+		.divstyle{
+			width: 1700px;
+			height: 700px;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- 头部 -->
+	<header class="header">
+		<!--学子商城logo-->
+		<div class="row">
+			<div class="col-md-3">
+			</div>
+			<!--快捷选项-->
+			<div class="col-md-9 top-item">
+				<ul class="list-inline pull-right">
+					<li></li>
+					<li class="li-split"></li>
+					<li></li>
+					<li class="li-split"></li>
+					<li></li>
+					<li class="li-split"></li>
+					<li>
+						<!--下列列表按钮 ：管理-->
+						<div class="btn-group">
+							<button type="button" class="btn btn-link dropdown-toggle"
+								data-toggle="dropdown">
+								<span id="top-dropdown-btn"><span class="fa fa-gears"></span>&nbsp;管理
+									<span class="caret"></span></span>
+							</button>
+							<ul class="dropdown-menu top-dropdown-ul" role="menu">
+								<li><a href="password.html">修改密码</a></li>
+								<li><a href="userdata.html">个人资料</a></li>
+							</ul>
+						</div>
+					</li>
+					<li class="li-split"></li>
+					<li>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</header>
+	<div class="row top-nav">
+		<div class="col-md-6">
+			<ul class="nav nav-pills">
+				<li><a href="#"></a></li>
+				<li class="active"><a href="index.html"><span
+						class="fa fa-home"></span></a></li>
+				<li><a href="supplies.html">物资列表</a></li>
+				<li><a href="insertsupplies.html">添加物资</a></li>
+			</ul>
+		</div>
+		<div class="col-md-6">
+			<form action="search.html" class="form-inline pull-right" role="form">
+				<div class="form-group">
+				</div>
+			</form>
+		</div>
+	</div>
+
+
+	<!-- 饼状图一 -->
+	<div id="demo5" class="divstyle"></div>
+	<script type="text/javascript">
+
+		$.getJSON("http://localhost:8989/getNumOfProvince.json", function(msg){
+			console.log(msg)
+			var data =[]
+			for(var i=0;i<msg.data.length;i++){
+				//将数据封装为json对象
+				var jsonobj = {}
+				jsonobj.value =msg.data[i].value
+				jsonobj.name = msg.data[i].key
+				console.log(jsonobj)
+				data.push(jsonobj)
+			}
+			var chartDom = document.getElementById('demo5');
+			var myChart = echarts.init(chartDom);
+			var option;
+
+			option = {
+				title: {
+					text: '全国各省份确诊人数统计',
+					left: 'center'
+				},
+				tooltip: {
+					trigger: 'item'
+				},
+				legend: {
+					orient: 'vertical',
+					left: 'left'
+				},
+				series: [
+					{
+						name: 'Access From',
+						type: 'pie',
+						radius: '70%',
+						data: data,
+						emphasis: {
+							itemStyle: {
+								shadowBlur: 10,
+								shadowOffsetX: 0,
+								shadowColor: 'rgba(0, 0, 0, 0.5)'
+							}
+						}
+					}
+				]
+			};
+
+			myChart.setOption(option);
+
+		})
+
+
+	</script>
+
+	<!-- 柱状图一 -->
+	<div id="demo1" class="divstyle"></div>
+	<script type="text/javascript">
+		$.getJSON("http://localhost:8989/getTopTwentyCity.json", function (msg) {
+			console.log(msg)
+
+			var xAxis = [];
+			var yAxix = [];
+
+			for (var i = 0; i < msg.data.length; i++) {
+				xAxis.push(msg.data[i].key)
+				yAxix.push(msg.data[i].value)
+			}
+
+			var demo1 = echarts.init(document.getElementById("demo1"), null, {
+				width: 1600,
+				height: 600
+			});
+			var option;
+			option = {
+				title: {
+					text: '全国确诊人数最多的十个地区',
+					left: 'center'
+				},
+				xAxis: {
+					type: 'category',
+					data: xAxis
+				},
+				tooltip: {
+					trigger: 'axis', //坐标轴触发，主要在柱状图，折线图等会使用类目轴的图表中使用
+					axisPointer: {// 坐标轴指示器，坐标轴触发有效
+						type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+					}
+				},
+				yAxis: {
+					type: 'value'
+				},
+				series: [
+					{
+						data: yAxix,
+						type: 'bar'
+					}
+				]
+			};
+
+			demo1.setOption(option);
+		})
+	</script>
+
+	<!-- 上海确诊、治愈、死亡折线图 -->
+	<div id="demo2" class="divstyle"></div>
+	<script type="text/javascript">
+		$.getJSON("http://localhost:8989/getDataOfShangHai.json", function (msg) {
+			console.log(msg)
+
+			var xAxis = [];
+			var yAxix1 = [];
+			var yAxix2 = [];
+			var yAxix3 = [];
+
+
+			for (var i = 0; i < msg.data.length; i++) {
+				xAxis.push(msg.data[i].key)
+				yAxix1.push(msg.data[i].value1)
+				yAxix2.push(msg.data[i].value2)
+				yAxix3.push(msg.data[i].value3)
+			}
+
+			var demo2 = echarts.init(document.getElementById("demo2"), null, {
+				width: 1600,
+				height: 600
+			});
+			var option;
+			option = {
+				title: {
+					text: '上海确诊、治愈、死亡折线图',
+					left: 'left'
+				},
+				legend:{
+					data: ["确诊", "治愈", "死亡"],
+					textStyle: {fontSize: 16}
+				},
+				xAxis: {
+					type: 'category',
+					data: xAxis
+				},
+				tooltip: {
+					trigger: 'axis', //坐标轴触发，主要在柱状图，折线图等会使用类目轴的图表中使用
+					axisPointer: {// 坐标轴指示器，坐标轴触发有效
+						type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+					}
+				},
+				yAxis: {
+					type: 'value'
+				},
+				series: [
+					{
+						data: yAxix1,
+						name: "确诊",
+						type: "line"
+					},
+					{
+						data: yAxix2,
+						name: "治愈",
+						type: "line"
+					},
+					{
+						data: yAxix3,
+						name: "死亡",
+						type: "line"
+					}
+				]
+			};
+
+			demo2.setOption(option);
+		})
+	</script>
+
+	<!-- 湖北确诊、治愈、死亡折线图 -->
+	<div id="demo9" class="divstyle"></div>
+	<script type="text/javascript">
+		$.getJSON("http://localhost:8989/getDataOfHubei.json", function (msg) {
+			console.log(msg)
+
+			var xAxis = [];
+			var yAxix1 = [];
+			var yAxix2 = [];
+			var yAxix3 = [];
+
+
+			for (var i = 0; i < msg.data.length; i++) {
+				xAxis.push(msg.data[i].key)
+				yAxix1.push(msg.data[i].value1)
+				yAxix2.push(msg.data[i].value2)
+				yAxix3.push(msg.data[i].value3)
+			}
+
+			var demo2 = echarts.init(document.getElementById("demo9"), null, {
+				width: 1600,
+				height: 600
+			});
+			var option;
+			option = {
+				title: {
+					text: '湖北确诊、治愈、死亡折线图',
+					left: 'left'
+				},
+				legend:{
+					data: ["确诊", "治愈", "死亡"],
+					textStyle: {fontSize: 16}
+				},
+				tooltip: {
+					trigger: 'axis', //坐标轴触发，主要在柱状图，折线图等会使用类目轴的图表中使用
+					axisPointer: {// 坐标轴指示器，坐标轴触发有效
+						type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+					}
+				},
+				xAxis: {
+					type: 'category',
+					data: xAxis
+				},
+				yAxis: {
+					type: 'value'
+				},
+				series: [
+					{
+						data: yAxix1,
+						name: "确诊",
+						type: "line"
+					},
+					{
+						data: yAxix2,
+						name: "治愈",
+						type: "line"
+					},
+					{
+						data: yAxix3,
+						name: "死亡",
+						type: "line"
+					}
+				]
+			};
+
+			demo2.setOption(option);
+		})
+	</script>
+
+	<!-- 北京确诊、治愈、死亡折线图 -->
+	<div id="demo10" class="divstyle"></div>
+	<script type="text/javascript">
+		$.getJSON("http://localhost:8989/getDataOfBeiJing.json", function (msg) {
+			console.log(msg)
+
+			var xAxis = [];
+			var yAxix1 = [];
+			var yAxix2 = [];
+			var yAxix3 = [];
+
+
+			for (var i = 0; i < msg.data.length; i++) {
+				xAxis.push(msg.data[i].key)
+				yAxix1.push(msg.data[i].value1)
+				yAxix2.push(msg.data[i].value2)
+				yAxix3.push(msg.data[i].value3)
+			}
+
+			var demo2 = echarts.init(document.getElementById("demo10"), null, {
+				width: 1600,
+				height: 600
+			});
+			var option;
+			option = {
+				title: {
+					text: '北京确诊、治愈、死亡折线图',
+					left: 'left'
+				},
+				legend:{
+					data: ["确诊", "治愈", "死亡"],
+					textStyle: {fontSize: 16}
+				},
+				tooltip: {
+					trigger: 'axis', //坐标轴触发，主要在柱状图，折线图等会使用类目轴的图表中使用
+					axisPointer: {// 坐标轴指示器，坐标轴触发有效
+						type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+					}
+				},
+				xAxis: {
+					type: 'category',
+					data: xAxis
+				},
+				yAxis: {
+					type: 'value'
+				},
+				series: [
+					{
+						data: yAxix1,
+						name: "确诊",
+						type: "line"
+					},
+					{
+						data: yAxix2,
+						name: "治愈",
+						type: "line"
+					},
+					{
+						data: yAxix3,
+						name: "死亡",
+						type: "line"
+					}
+				]
+			};
+
+			demo2.setOption(option);
+		})
+	</script>
+
+	<!-- 饼状图二 -->
+	<div id="demo6" class="divstyle"></div>
+	<script type="text/javascript">
+		$.getJSON("http://localhost:8989/getDeadTopFiveProvince.json", function(msg){
+			console.log(msg)
+			var data =[]
+			for(var i=0;i<msg.data.length;i++){
+				//将数据封装为json对象
+				var jsonobj = {}
+				jsonobj.value =msg.data[i].value
+				jsonobj.name = msg.data[i].key
+				data.push(jsonobj)
+			}
+			var chartDom = document.getElementById('demo6');
+			var myChart = echarts.init(chartDom);
+			var option;
+
+			option = {
+				backgroundColor: '#2c343c',
+				title: {
+					text: '死亡人数最高的五个省份',
+					left: 'center',
+					top: 20,
+					textStyle: {
+						color: '#ccc'
+					}
+				},
+				tooltip: {
+					trigger: 'item'
+				},
+				visualMap: {
+					show: false,
+					min: 80,
+					max: 600,
+					inRange: {
+						colorLightness: [0, 1]
+					}
+				},
+				series: [
+					{
+						name: 'Access From',
+						type: 'pie',
+						radius: '55%',
+						center: ['50%', '50%'],
+						data: data.sort(function (a, b) {
+							return a.value - b.value;
+						}),
+						roseType: 'radius',
+						label: {
+							color: 'rgba(255, 255, 255, 0.3)'
+						},
+						labelLine: {
+							lineStyle: {
+								color: 'rgba(255, 255, 255, 0.3)'
+							},
+							smooth: 0.2,
+							length: 10,
+							length2: 20
+						},
+						itemStyle: {
+							color: '#c23531',
+							shadowBlur: 200,
+							shadowColor: 'rgba(0, 0, 0, 0.5)'
+						},
+						animationType: 'scale',
+						animationEasing: 'elasticOut',
+						animationDelay: function (idx) {
+							return Math.random() * 200;
+						}
+					}
+				]
+			};
+
+			myChart.setOption(option);
+
+		})
+	</script>
+
+	<!-- 饼状图三 -->
+	<div id="demo7" class="divstyle"></div>
+	<script type="text/javascript">
+
+		$.getJSON("http://localhost:8989/getNumOfCountry.json", function(msg){
+			console.log(msg)
+			var data =[]
+			for(var i=0;i<msg.data.length;i++){
+				//将数据封装为json对象
+				var jsonobj = {}
+				jsonobj.value =msg.data[i].value
+				jsonobj.name = msg.data[i].key
+				console.log(jsonobj)
+				data.push(jsonobj)
+			}
+			var chartDom = document.getElementById('demo7');
+			var myChart = echarts.init(chartDom);
+			var option;
+
+			option = {
+				title: {
+					text: '全球各国确诊人数',
+					subtext: 'Fake Data',
+					left: 'center'
+				},
+				tooltip: {
+					trigger: 'item'
+				},
+				legend: {
+					orient: 'vertical',
+					itemWidth: 10,
+					itemHeight: 7,
+					left: 'left'
+				},
+				series: [
+					{
+						name: 'Access From',
+						center: ['70%', '50%'],
+						type: 'pie',
+						radius: '70%',
+						data: data,
+						emphasis: {
+							itemStyle: {
+								shadowBlur: 10,
+								shadowOffsetX: 0,
+								shadowColor: 'rgba(0, 0, 0, 0.5)'
+							}
+						}
+					}
+				]
+			};
+
+			myChart.setOption(option);
+
+		})
+
+
+	</script>
+
+	<!-- 柱状图二 -->
+	<div id="demo8" class="divstyle"></div>
+	<script type="text/javascript">
+		$.getJSON("http://localhost:8989/getNumOfContinents.json", function (msg) {
+			console.log(msg)
+
+			var xAxis = [];
+			var yAxix = [];
+
+			for (var i = 0; i < msg.data.length; i++) {
+				xAxis.push(msg.data[i].key)
+				yAxix.push(msg.data[i].value)
+			}
+
+			var demo1 = echarts.init(document.getElementById("demo8"), null, {
+				width: 1600,
+				height: 600
+			});
+			var option;
+			option = {
+				title: {
+					text: '各大洲确诊人数',
+					left: 'center'
+				},
+				xAxis: {
+					type: 'category',
+					data: xAxis
+				},
+				tooltip: {
+					trigger: 'axis', //坐标轴触发，主要在柱状图，折线图等会使用类目轴的图表中使用
+					axisPointer: {// 坐标轴指示器，坐标轴触发有效
+						type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+					}
+				},
+				yAxis: {
+					type: 'value'
+				},
+				series: [
+					{
+						data: yAxix,
+						type: 'bar'
+					}
+				]
+			};
+
+			demo1.setOption(option);
+		})
+	</script>
+
+	<!-- 中国地图 -->
+<!--	<div id="demo4" class="divstyle"></div>-->
+<!--	<script type="text/javascript">-->
+<!--		$.getJSON("http://localhost:8989/getNumOfProvince.json", function (data) {-->
+
+<!--			// 基于准备好的dom，初始化echarts实例-->
+<!--			var myChart = echarts.init(document.getElementById('demo4'), 'dark');-->
+<!--			var geoCoordMap = {-->
+<!--				'甘肃':[103.73, 36.03],-->
+<!--				'青海':[101.74, 36.56],-->
+<!--				'四川':[104.06, 30.67],-->
+<!--				'河北':[114.48, 38.03],-->
+<!--				'云南':[102.73, 25.04],-->
+<!--				'贵州':[106.71, 26.57],-->
+<!--				'湖北':[114.31, 30.52],-->
+<!--				'河南':[113.65, 34.76],-->
+<!--				'山东':[117, 36.65],-->
+<!--				'江苏':[118.78, 32.04],-->
+<!--				'安徽':[117.27, 31.86],-->
+<!--				'浙江':[120.19, 30.26],-->
+<!--				'江西':[115.89, 28.68],-->
+<!--				'福建':[119.3, 26.08],-->
+<!--				'广东':[113.23, 23.16],-->
+<!--				'湖南':[113, 28.21],-->
+<!--				'海南':[110.35, 20.02],-->
+<!--				'辽宁':[123.38, 41.8],-->
+<!--				'吉林':[125.35, 43.88],-->
+<!--				'黑龙江':[126.63, 45.75],-->
+<!--				'山西':[112.53, 37.87],-->
+<!--				'陕西':[108.95, 34.27],-->
+<!--				'台湾':[121.30, 25.03],-->
+<!--				'北京':[116.46, 39.92],-->
+<!--				'上海':[121.48, 31.22],-->
+<!--				'重庆':[106.54, 29.59],-->
+<!--				'天津':[117.2, 39.13],-->
+<!--				'内蒙古':[111.65, 40.82],-->
+<!--				'广西':[108.33, 22.84],-->
+<!--				'西藏':[91.11, 29.97],-->
+<!--				'宁夏':[106.27, 38.47],-->
+<!--				'新疆':[87.68, 43.77],-->
+<!--				'香港':[114.17, 22.28],-->
+<!--				'澳门':[113.54, 22.19],-->
+<!--				'其他':0,-->
+<!--			};-->
+
+<!--			var convertData = function (data) {-->
+<!--				console.log(data)-->
+<!--				console.log(data.data.length)-->
+<!--				var res = [];-->
+<!--				for (var i = 0; i < data.data.length; i++) {-->
+<!--					var geoCoord = geoCoordMap[data.data[i].key];-->
+<!--					if (geoCoord) {-->
+<!--						res.push({-->
+<!--							name: data.data[i].key,-->
+<!--							value: geoCoord.concat(data.data[i].value)-->
+<!--						});-->
+<!--					}-->
+<!--				}-->
+<!--				return res;-->
+<!--			};-->
+<!--			option = {-->
+<!--				backgroundColor: '#483d8b',-->
+<!--				title : {text: '',},-->
+<!--				tooltip : {-->
+<!--					trigger: 'item',-->
+<!--					formatter: function(params) {-->
+<!--						if (typeof(params.value)[2] == "undefined") {-->
+<!--							return params.name + ' : ' + params.value;-->
+<!--						} else {-->
+<!--							return params.name + ' : ' + params.value[2];-->
+<!--						}-->
+<!--					},-->
+<!--					textStyle: {-->
+<!--						color: '#FFF',-->
+<!--						fontSize:24-->
+<!--					}-->
+<!--				},-->
+<!--				legend: {-->
+<!--					show:false-->
+<!--				},-->
+<!--				geo: {-->
+<!--					map: 'china',-->
+<!--					label: {-->
+<!--						normal: {show: false},-->
+<!--						emphasis: {show: false}-->
+<!--					},-->
+<!--					roam: false,-->
+<!--					itemStyle: {-->
+<!--						normal: {-->
+<!--							areaColor: 'rgba(0,153,255,0.6)',-->
+<!--							borderColor: '#09F'-->
+<!--						},-->
+<!--						emphasis: {-->
+<!--							areaColor: 'rgba(0,153,255,0.6)',-->
+<!--							borderColor: '#09F'-->
+<!--						}-->
+<!--					}-->
+<!--				},-->
+<!--				series: [{ //普通小点-->
+<!--					name: '战略布局点',-->
+<!--					type: 'scatter',-->
+<!--					coordinateSystem: 'geo',-->
+<!--					zlevel: 1,-->
+<!--					rippleEffect: {-->
+<!--						brushType: 'stroke'-->
+<!--					},-->
+<!--					symbolSize: function (val) {-->
+<!--						return val[2] / 96;-->
+<!--					},-->
+<!--					label: {-->
+<!--						normal: {show: false},-->
+<!--						emphasis: {show: false}-->
+<!--					},-->
+<!--					itemStyle: {-->
+<!--						normal: {color: 'rgba(255,255,0,0.8)'},-->
+<!--						emphasis: {color: 'rgba(246,33,87,1)'}-->
+<!--					},-->
+<!--					data: convertData(data)-->
+<!--				},-->
+<!--					{ //有扩散效果的大点-->
+<!--						name: '战略布局TOP5',-->
+<!--						type: 'effectScatter',-->
+<!--						coordinateSystem: 'geo',-->
+<!--						zlevel: 2,-->
+<!--						hoverAnimation: true,-->
+<!--						showEffectOn: 'render',-->
+<!--						rippleEffect: {-->
+<!--							brushType: 'stroke'-->
+<!--						},-->
+<!--						label: {-->
+<!--							normal: {-->
+<!--								show: true,-->
+<!--								fontFamily:'微软雅黑',-->
+<!--								fontSize: 24,-->
+<!--								color:'#FFF',-->
+<!--								formatter: '{b}',-->
+<!--								position: 'right',-->
+<!--								shadowBlur: 5,-->
+<!--								shadowColor: '#000'-->
+<!--							},-->
+<!--							emphasis: {-->
+<!--								show: true-->
+<!--							}-->
+<!--						},-->
+<!--						symbolSize: function (val) {-->
+<!--							return val[2] / 96;-->
+<!--						},-->
+<!--						itemStyle: {-->
+<!--							normal: {-->
+<!--								color: 'rgba(255,255,255,1)'-->
+<!--							}-->
+<!--						},-->
+<!--						data: convertData(data).sort(function(a, b) {-->
+<!--							return b.value[2] - a.value[2];-->
+<!--						}).slice(0, 5)-->
+<!--					},-->
+<!--					{//有地理位置的标记，同时显示值-->
+<!--						name: '点',-->
+<!--						type: 'scatter',-->
+<!--						coordinateSystem: 'geo',-->
+<!--						symbol: 'pin',-->
+<!--						symbolSize: function(val) {-->
+<!--							return val[2]/32;-->
+<!--						},-->
+<!--						label: {-->
+<!--							normal: {-->
+<!--								show: true,-->
+<!--								fontFamily:'Arial, Helvetica, sans-serif',-->
+<!--								formatter:'{@[2]}',-->
+<!--								textStyle: {-->
+<!--									color: '#FFF',-->
+<!--									fontSize: 18,-->
+<!--								}-->
+<!--							}-->
+<!--						},-->
+<!--						itemStyle: {-->
+<!--							normal: {-->
+<!--								color: 'rgba(246,33,87,1)', //标志颜色-->
+<!--							}-->
+<!--						},-->
+<!--						zlevel: 3,-->
+<!--						data: convertData(data).sort(function(a, b) {-->
+<!--							return b.value[2] - a.value[2];-->
+<!--						}).slice(0, 5)-->
+<!--					}]-->
+<!--			};-->
+
+<!--			// 使用刚指定的配置项和数据显示图表。-->
+<!--			myChart.setOption(option);-->
+<!--		})-->
+<!--	</script>-->
+
+
+	<!--页脚开始-->
+	<footer class="footer">
+		<!-- 品质保障，私人定制等-->
+		<div class="text-center rights container">
+			<div class="col-md-offset-2 col-md-2">
+				<span class="fa fa-thumbs-o-up"></span>
+				<p></p>
+			</div>
+			<div class="col-md-2">
+				<span class="fa fa-address-card-o"></span>
+				<p></p>
+			</div>
+			<div class="col-md-2">
+				<span class="fa fa-graduation-cap"></span>
+				<p></p>
+			</div>
+			<div class="col-md-2">
+				<span class="fa fa-bitcoin"></span>
+				<p></p>
+			</div>
+		</div>
+		<!--联系我们、下载客户端等-->
+		<div class="container beforeBottom">
+			<div class="col-md-offset-1 col-md-3">
+				<div>
+					<img src="" alt="" class="footLogo" />
+				</div>
+				<div>
+					<img src="" alt="" />
+				</div>
+			</div>
+			<div class="col-md-4 callus text-center">
+				<div class="col-md-4">
+					<ul>
+						<li><a href="#"><p>covid帮助</p></a></li>
+						<li><a href="#">新手指南</a></li>
+						<li><a href="#">服务保障</a></li>
+						<li><a href="#">常见问题</a></li>
+					</ul>
+				</div>
+				<div class="col-md-4">
+					<ul>
+						<li><a href="#"><p>帮助</p></a></li>
+						<li><a href="#">入驻</a></li>
+						<li><a href="#">后台</a></li>
+					</ul>
+				</div>
+				<div class="col-md-4">
+					<ul>
+						<li><a href="#"><p>关于我们</p></a></li>
+						<li><a href="#">关于tyut</a></li>
+						<li><a href="#">联系我们</a></li>
+						<li><span class="fa fa-wechat"></span> <span
+								class="fa fa-weibo"></span></li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-4">
+			</div>
+		</div>
+		<!-- 页面底部-备案号 #footer -->
+		<div class="col-md-12 text-center bottom">
+			Copyright © 2022 tyut.cn All Rights Reserved 京ICP备000000000号-00 <a
+				target="_blank" href="http://www2017.tyut.edu.cn/">太原理工大学软件工程</a>
+		</div>
+	</footer>
+	<!--页脚结束-->
+
+</body>
+</html>
